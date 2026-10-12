@@ -921,6 +921,16 @@ static bool IsBotSafeForLevelReset(Player* bot)
         }
         return false;
     }
+    // Scourge Invasion 2008 (mod-scourge-invasion-2008): a zombie bot (43869 "You're a Zombie!") stays one
+    // until it dies - PlayerbotFactory::Randomize would strip the zombie form along with every other aura
+    if (bot->HasAura(43869))
+    {
+        if (g_BotDistFullDebugMode)
+        {
+            LOG_INFO("server.loading", "[BotLevelBrackets] Bot {} (Level {}) is a Scourge Invasion zombie.", bot->GetName(), bot->GetLevel());
+        }
+        return false;
+    }
     if (bot->InBattleground() || bot->InArena() || bot->inRandomLfgDungeon() || bot->InBattlegroundQueue())
     {
         if (g_BotDistFullDebugMode)
